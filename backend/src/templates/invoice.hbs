@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Invoice {{invoice_number}}</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #222; margin: 24px; }
+    header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+    .seller { max-width:60%; }
+    .logo img { max-height:80px; }
+    table { width:100%; border-collapse:collapse; margin-top:12px; }
+    table thead th { text-align:left; border-bottom:2px solid #ddd; padding:8px 4px; }
+    table tbody td { padding:8px 4px; border-bottom:1px solid #eee; vertical-align:top; }
+    .totals { float:right; margin-top:12px; width:40%; }
+    .right { text-align:right; }
+    footer { margin-top:40px; font-size:11px; color:#666; }
+    pre { font-family: inherit; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="seller">
+      <h2>{{seller_name}}</h2>
+      <div>{{seller_address}}</div>
+      <div>{{seller_phone}} {{seller_email}}</div>
+      <div>{{seller_website}}</div>
+      <div>{{#if seller_ein}}EIN: {{seller_ein}}{{/if}}</div>
+    </div>
+    <div class="logo">
+      {{#if logo_url}}<img src="{{logo_url}}" alt="Logo" />{{/if}}
+    </div>
+  </header>
+
+  <section>
+    <table style="width:100%; margin-bottom:8px;">
+      <tr>
+        <td><strong>Invoice #</strong> {{invoice_number}}<br/><strong>Invoice Date</strong> {{invoice_date}}<br/><strong>Due Date</strong> {{due_date}}</td>
+        <td style="text-align:right"><strong>Terms:</strong> {{terms}}<br/><strong>Order No:</strong> {{order_no}}<br/><strong>P.O. No:</strong> {{po_no}}<br/><strong>Customer #:</strong> {{customer_account_no}}</td>
+      </tr>
+    </table>
+  </section>
+
+  <section style="display:flex; gap:20px; margin-top:12px">
+    <div style="flex:1">
+      <h4>Bill To</h4>
+      <div>{{bill_to_name}}</div>
+      <div>{{bill_to_company}}</div>
+      <pre>{{bill_to_address}}</pre>
+      <div>{{bill_to_phone}} {{bill_to_email}}</div>
+    </div>
+    <div style="flex:1">
+      <h4>Ship To</h4>
+      <div>{{ship_to_name}}</div>
+      <div>{{ship_to_company}}</div>
+      <pre>{{ship_to_address}}</pre>
+      <div>{{ship_to_phone}} {{ship_to_email}}</div>
+    </div>
+  </section>
+
+  <table>
+    <thead><tr><th style="width:6%">Qty</th><th style="width:12%">SKU</th><th style="width:12%">MFG Part #</th><th>Description</th><th style="width:12%" class="right">Unit</th><th style="width:12%" class="right">Line Total</th></tr></thead>
+    <tbody>
+      {{#each items}}
+        <tr>
+          <td>{{quantity}}</td>
+          <td>{{sku}}</td>
+          <td>{{mfg_part}}</td>
+          <td>{{description}}</td>
+          <td class="right">{{unit_price}}</td>
+          <td class="right">{{line_total}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div class="right">Subtotal: {{subtotal}}</div>
+    <div class="right">Discount: {{discount_fixed}}</div>
+    <div class="right">Shipping: {{shipping_amount}}</div>
+    <div class="right">Tax ({{tax_percent}}%): {{tax_amount}}</div>
+    <h3 class="right">Total: {{total}}</h3>
+  </div>
+
+  <div style="clear:both"></div>
+
+  <section style="margin-top:20px;">
+    <h4>Payment Details</h4>
+    <div>{{payment_method}} {{bank_name}} {{account_number}} {{routing_number}}</div>
+    <pre>{{payment_notes}}</pre>
+  </section>
+
+  <footer>
+    <pre>{{notes}}</pre>
+  </footer>
+</body>
+</html>
